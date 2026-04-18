@@ -13,7 +13,8 @@ from datetime import date, timedelta
 import httpx
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("Finnhub Stock Data")
+_port = int(os.environ.get("PORT", 8000))
+mcp = FastMCP("Finnhub Stock Data", host="0.0.0.0", port=_port)
 
 FINNHUB_KEY = os.environ.get("FINNHUB_API_KEY", "")
 BASE = "https://finnhub.io/api/v1"
@@ -504,6 +505,4 @@ async def compare_stocks(symbols: str) -> str:
 
 
 if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 8000))
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=port)
+    mcp.run(transport="streamable-http")
